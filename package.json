@@ -2,7 +2,7 @@
   "name": "BoxGameAI",
   "version": "0.0.0",
   "description": "(work in progress)",
-  "main": "js/lib/game.js",
+  "main": "js/game.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "prepublish": "node ./node_modules/coffee-script/bin/cake build"
