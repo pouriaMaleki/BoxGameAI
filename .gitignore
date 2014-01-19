@@ -1,0 +1,10 @@
+*.bat
+.htaccess
+js/**
+xeno/**
+node_modules
+
+-p
+
+npm-debug.log
+!*.gitkeep
