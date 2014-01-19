@@ -4,17 +4,31 @@ module.exports = class Intelligence
 
 	getNextMove: ->
 
-		do ->
+		@generateRandomMove()
 
-			row = Math.floor(Math.random() * 10)
-			col = Math.floor(Math.random() * 15)
+	generateRandomMove: ->
 
-			rand = Math.floor(Math.random() * 2)
+		row = Math.floor(Math.random() * 5)
+		col = Math.floor(Math.random() * 5)
 
-			if rand < 1
+		rand = Math.floor(Math.random() * 2)
 
-				'[' + row + ',' + col + ',' + (row + 1) + ',' + col + ']'
+		if rand < 1
 
-			else
+			move =
 
-				'[' + row + ',' + col + ',' + row + ',' + (col + 1) + ']'
+				x1: row
+				y1: col
+
+				x2: row + 1
+				y2: col
+
+		else
+
+			move =
+
+				x1: row
+				y1: col
+
+				x2: row
+				y2: col + 1

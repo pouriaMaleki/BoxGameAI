@@ -1,42 +1,42 @@
+Player = require './Player'
+
 module.exports = class ManageMessages
 
 	constructor: ->
 
-		@yt = 0
+		@player = new Player
+
+		@moveRegex = ///^(\[([0-9]),([0-9]|1[0-4]),([0-9]),([0-9]|1[0-4])])$///
+
+		@bonusRegex = ///Bonus\(\+([1-2]),[A-B]\)(\|\[([0-9]),([0-9]|1[0-4]),([0-9]),([0-9]|1[0-4])])?///
+
+		@invalidRegex = ///(Time`sUP\(\)|InValid\(\))\|(\[([0-9]),([0-9]|1[0-4]),([0-9]),([0-9]|1[0-4])])///
 
 	processMessage: (message) ->
 
-		@move = {}
-
 		firstMatch = message.substring(0, 1)
-
-		moveRegex = ///^(\[([0-9]),([0-9]|1[0-4]),([0-9]),([0-9]|1[0-4])])$///
-
-		bonusRegex = ///Bonus\(\+([1-2]),[A-B]\)(\|\[([0-9]),([0-9]|1[0-4]),([0-9]),([0-9]|1[0-4])])?///
-
-		invalidRegex = ///(Time`sUP\(\)|Invalid\(\))\|(\[([0-9]),([0-9]|1[0-4]),([0-9]),([0-9]|1[0-4])])///
 
 		switch firstMatch
 
 			when 'S'
 
-				@yt++
+				@player.yt++
 
 				return
 
 			when 'R'
 
-				@yt--
+				@player.yt--
 
 				return
 
-		matchMove = message.match(moveRegex)
+		matchMove = message.match(@moveRegex)
 
 		if matchMove
 
-			@yt++
+			@player.yt++
 
-			@move =
+			@player.setMove
 
 				x1: matchMove[2]
 				y1: matchMove[3]
@@ -46,13 +46,13 @@ module.exports = class ManageMessages
 
 			return
 
-		invalidMatch = message.match(invalidRegex)
+		invalidMatch = message.match(@invalidRegex)
 
 		if invalidMatch
 
-			@yt--
+			@player.yt--
 
-			@move =
+			@player.myFailMoveCorrected
 
 				message: invalidMatch[1]
 
@@ -62,8 +62,7 @@ module.exports = class ManageMessages
 				x2: invalidMatch[5]
 				y2: invalidMatch[6]
 
-
-		matchBonus = message.match(bonusRegex)
+		matchBonus = message.match(@bonusRegex)
 
 		if matchBonus
 
@@ -71,16 +70,26 @@ module.exports = class ManageMessages
 
 			if matchBonus[3] is undefined or matchBonus[3] is null
 
-				@yt = count
+				@player.yt = count
 
 			else
 
-				@yt = -count + 1
+				@player.yt = -count + 1
 
-				@move =
+				@player.setMove
 
 					x1: matchBonus[3]
 					y1: matchBonus[4]
 
 					x2: matchBonus[5]
 					y2: matchBonus[6]
+
+	getMessage: ->
+
+		if @player.isMyTurn()
+
+			move = @player.getNextMove()
+
+			if move
+
+				'[' + move.x1 + ',' + move.y1 + ',' + move.x2 + ',' + move.y2 + ']'

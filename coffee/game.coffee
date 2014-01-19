@@ -1,34 +1,22 @@
 net = require 'net'
-Intelligence = require './Intelligence'
+
 ManageMessages = require './ManageMessages'
 
-ai = new Intelligence
 mm = new ManageMessages
 
 client = net.connect {port: 8000}, ->
 
 	console.log "client connected"
 
-
 client.on "data", (data) ->
 
-	data = data.toString()
+	mm.processMessage data.toString()
 
-	console.log 'recived message:' + data
+	message = mm.getMessage()
 
-	mm.processMessage data
+	if message
 
-	console.log 'yt: ' + mm.yt
-
-	console.log 'move: ' + JSON.stringify(mm.move)
-
-	# x = ai.getNextMove()
-
-	# console.log 'my message is: ' + x
-
-	# client.write x
-
-	# client.end()
+		client.write message
 
 client.on "end", ->
 
