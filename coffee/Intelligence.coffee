@@ -1,10 +1,22 @@
+Table = require './Table'
+
 module.exports = class Intelligence
 
 	constructor: ->
 
+		@table = new Table
+
 	getNextMove: ->
 
 		@generateRandomMove()
+
+	setLastMove: (@lastMove) ->
+
+		@table.setLine(@lastMove.x1, @lastMove.y1, @lastMove.x2, @lastMove.y2)
+
+	myMove: (move) ->
+
+		@table.setLine(move.x1, move.y1, move.x2, move.y2)
 
 	generateRandomMove: ->
 

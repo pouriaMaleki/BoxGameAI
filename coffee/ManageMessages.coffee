@@ -26,6 +26,8 @@ module.exports = class ManageMessages
 
 			when 'R'
 
+				@player.myMoveIsDone()
+
 				@player.yt--
 
 				return
@@ -38,11 +40,11 @@ module.exports = class ManageMessages
 
 			@player.setMove
 
-				x1: matchMove[2]
-				y1: matchMove[3]
+				x1: parseInt matchMove[2]
+				y1: parseInt matchMove[3]
 
-				x2: matchMove[4]
-				y2: matchMove[5]
+				x2: parseInt matchMove[4]
+				y2: parseInt matchMove[5]
 
 			return
 
@@ -56,11 +58,11 @@ module.exports = class ManageMessages
 
 				message: invalidMatch[1]
 
-				x1: invalidMatch[3]
-				y1: invalidMatch[4]
+				x1: parseInt invalidMatch[3]
+				y1: parseInt invalidMatch[4]
 
-				x2: invalidMatch[5]
-				y2: invalidMatch[6]
+				x2: parseInt invalidMatch[5]
+				y2: parseInt invalidMatch[6]
 
 		matchBonus = message.match(@bonusRegex)
 
@@ -78,11 +80,11 @@ module.exports = class ManageMessages
 
 				@player.setMove
 
-					x1: matchBonus[3]
-					y1: matchBonus[4]
+					x1: parseInt matchBonus[3]
+					y1: parseInt matchBonus[4]
 
-					x2: matchBonus[5]
-					y2: matchBonus[6]
+					x2: parseInt matchBonus[5]
+					y2: parseInt matchBonus[6]
 
 	getMessage: ->
 

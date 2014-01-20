@@ -10,11 +10,20 @@ module.exports = class Player
 
 	getNextMove: ->
 
-		@intel.getNextMove()
+		@myLastMove = @intel.getNextMove()
 
 	setMove: (move) ->
 
+		@intel.setLastMove move
+
+	myMoveIsDone: ->
+
+		@intel.myMove(@myLastMove)
+
 	myFailMoveCorrected: (move) ->
+
+		@myLastMove = move
+		@intel.myMove(move)
 
 	isMyTurn: ->
 
