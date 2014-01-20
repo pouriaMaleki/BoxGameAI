@@ -5,17 +5,36 @@ module.exports = class Table
 		@h = new Uint8Array 20
 		@v = new Uint8Array 20
 
-	getHover1: ->
+	getHoverLines: (x1, y1, x2, y2) ->
 
-	getHover2: ->
+		result = @normalizeCordinates(x1, y1, x2, y2)
 
-	getHover3: ->
+		x1 = result[0]
+		y1 = result[1]
+		x2 = result[2]
+		y2 = result[3]
 
-	getHover4: ->
+		if @checkDirection(x1, y1, x2, y2) is 1
 
-	getHover5: ->
+			l1 = @getLine(x2 - 1, y2 - 1, x1, y1)
+			l2 = @getLine(x1 - 1, y1, x2 - 1, y2)
+			l3 = @getLine(x1 - 1, y1 + 1, x2, y2)
+			l4 = @getLine(x2, y2, x1 + 1, y1 + 1)
+			l5 = @getLine(x1 + 1, y1, x2 + 1, y2)
+			l6 = @getLine(x1, y1, x2 + 1, y2 - 1)
 
-	getHover6: ->
+			return [l1, l2, l3, l4, l5, l6]
+
+		else
+
+			l1 = @getLine(x1, y1, x2 - 1, y2 + 1)
+			l2 = @getLine(x1, y1 + 1, x2, y2 + 1)
+			l3 = @getLine(x2, y2, x1 + 1, y1 + 1)
+			l4 = @getLine(x1 + 1, y1 - 1, x2, y2)
+			l5 = @getLine(x1, y1 - 1, x2, y2 - 1)
+			l6 = @getLine(x2 - 1, y2 - 1, x1, y1)
+
+			return [l1, l2, l3, l4, l5, l6]
 
 	getHorizontal: (x, y) ->
 
@@ -55,45 +74,30 @@ module.exports = class Table
 
 	convertCordinateToLine: (x1, y1, x2, y2) ->
 
+		result = @normalizeCordinates(x1, y1, x2, y2)
+
+		x1 = result[0]
+		y1 = result[1]
+		x2 = result[2]
+		y2 = result[3]
+
 		if @checkDirection(x1, y1, x2, y2) is 1
 
-			if y1 < y2
+			return {
 
-				return {
+				index: @getHorizontal(x1, y1)
+				direction: 1
 
-					index: @getHorizontal(x1, y1)
-					direction: 1
-
-				}
-
-			else
-
-				return {
-
-					index: @getHorizontal(x2, y2)
-					direction: 1
-
-				}
+			}
 
 		else
 
-			if x1 < x2
+			return {
 
-				return {
+				index: @getVertical(x1, y1)
+				direction: 0
 
-					index: @getVertical(x1, y1)
-					direction: 0
-
-				}
-
-			else
-
-				return {
-
-					index: @getVertical(x2, y2)
-					direction: 0
-
-				}
+			}
 
 	convertLineToCordinate: (index) ->
 
@@ -122,3 +126,38 @@ module.exports = class Table
 
 			@v[result.index] = 1
 
+	getLine: (x1, y1, x2, y2) ->
+
+		if x1 < 0 or y1 < 0 or x2 < 0 or y2 < 0
+
+			return -1
+
+		if x1 > 4 or y1 > 4 or x2 > 4 or y2 > 4
+
+			return -1
+
+		result = @convertCordinateToLine(x1, y1, x2, y2)
+
+		if result.direction is 1
+
+			return {
+
+				line: @h[result.index]
+				direction: 1
+			}
+
+		else
+
+			return {
+
+				line: @v[result.index]
+				direction: 0
+			}
+
+	normalizeCordinates: (x1, y1, x2, y2) ->
+
+		if y1 > y2 or x1 > x2
+
+			return [x2, y2, x1, y1]
+
+		return [x1, y1, x2, y2]

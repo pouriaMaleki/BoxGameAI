@@ -27,5 +27,6 @@ Table = require './Table'
 
 t = new Table
 
-console.log t.setLine(0,3,0,4)
-console.log t.v
+# t.getHoverLines(2,2,2,3)
+# t.getHoverLines(2,1,3,1)
+t.getHoverLines(0,0,1,0)
