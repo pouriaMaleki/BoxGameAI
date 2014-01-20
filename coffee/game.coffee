@@ -1,23 +1,31 @@
-net = require 'net'
+# net = require 'net'
 
-ManageMessages = require './ManageMessages'
+# ManageMessages = require './ManageMessages'
 
-mm = new ManageMessages
+# mm = new ManageMessages
 
-client = net.connect {port: 8000}, ->
+# client = net.connect {port: 8000}, ->
 
-	console.log "client connected"
+# 	console.log "client connected"
 
-client.on "data", (data) ->
+# client.on "data", (data) ->
 
-	mm.processMessage data.toString()
+# 	mm.processMessage data.toString()
 
-	message = mm.getMessage()
+# 	message = mm.getMessage()
 
-	if message
+# 	if message
 
-		client.write message
+# 		client.write message
 
-client.on "end", ->
+# client.on "end", ->
 
-	console.log "client disconnected"
+# 	console.log "client disconnected"
+
+
+Table = require './Table'
+
+t = new Table
+
+console.log t.setLine(0,3,0,4)
+console.log t.v
