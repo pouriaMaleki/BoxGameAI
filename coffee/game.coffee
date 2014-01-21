@@ -3,6 +3,9 @@ net = require 'net'
 ManageMessages = require './ManageMessages'
 
 mm = new ManageMessages
+# mm.processMessage('Start()')
+# console.log mm.getMessage()
+
 
 client = net.connect {port: 8000}, ->
 
@@ -10,7 +13,11 @@ client = net.connect {port: 8000}, ->
 
 client.on "data", (data) ->
 
-	mm.processMessage data.toString()
+	data = data.toString()
+
+	console.log data
+
+	mm.processMessage data
 
 	message = mm.getMessage()
 

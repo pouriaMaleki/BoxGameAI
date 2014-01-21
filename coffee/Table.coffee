@@ -2,8 +2,11 @@ module.exports = class Table
 
 	constructor: ->
 
-		@h = new Uint8Array 20
-		@v = new Uint8Array 20
+		@row = 10
+		@col = 10
+
+		@h = new Uint8Array (@col - 1) * @row
+		@v = new Uint8Array @col * (@row - 1)
 
 	getHoverLines: (x1, y1, x2, y2) ->
 
@@ -38,11 +41,11 @@ module.exports = class Table
 
 	getHorizontal: (x, y) ->
 
-		x * 4 + y
+		x * (@col - 1) + y
 
 	getVertical: (x, y) ->
 
-		x * 5 + y
+		x * @col + y
 
 	horizontal: (x, y, value = null) ->
 
@@ -99,7 +102,21 @@ module.exports = class Table
 
 			}
 
-	convertLineToCordinate: (index) ->
+	convertLineToCordinate: (index, direction) ->
+
+		if direction is 1
+
+			x = Math.floor(index / (@row - 1))
+			y = index % (@row - 1)
+
+			return [x, y, x, y + 1]
+
+		else
+
+			x = Math.floor(index / @row)
+			y = index % @row
+
+			return [x, y, x + 1, y]
 
 	checkDirection: (x1, y1, x2, y2) ->
 
@@ -132,7 +149,7 @@ module.exports = class Table
 
 			return -1
 
-		if x1 > 4 or y1 > 4 or x2 > 4 or y2 > 4
+		if (x1 > (@row - 1)) or (y1 > (@col - 1)) or (x2 > (@row - 1)) or (y2 > (@col - 1))
 
 			return -1
 

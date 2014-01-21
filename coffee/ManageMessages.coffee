@@ -30,8 +30,6 @@ module.exports = class ManageMessages
 
 				@player.yt--
 
-				return
-
 		matchMove = message.match(@moveRegex)
 
 		if matchMove
@@ -66,6 +64,8 @@ module.exports = class ManageMessages
 
 		matchBonus = message.match(@bonusRegex)
 
+		console.log JSON.stringify(matchBonus)
+
 		if matchBonus
 
 			count = parseInt(matchBonus[1])
@@ -87,6 +87,8 @@ module.exports = class ManageMessages
 					y2: parseInt matchBonus[6]
 
 	getMessage: ->
+
+		console.log @player.yt
 
 		if @player.isMyTurn()
 
