@@ -18,17 +18,25 @@ module.exports = class ManageMessages
 
 		switch firstMatch
 
+			when 'R'
+
+				@player.myMoveIsDone()
+
+				@player.yt--
+
 			when 'S'
 
 				@player.yt++
 
 				return
 
-			when 'R'
+			when 'G'
 
-				@player.myMoveIsDone()
+				regex = ///^Game_Info.\(([0-9]|1[0-9]),([0-9]|1[0-9]),([0-9]|1[0-9]):([0-9]|1[0-9]):([0-9]|1[0-9])\)$///
 
-				@player.yt--
+				startMatch = message.match(regex)
+
+				@player.createIntel(parseInt(startMatch[1]), parseInt(startMatch[2]))
 
 		matchMove = message.match(@moveRegex)
 
@@ -64,8 +72,6 @@ module.exports = class ManageMessages
 
 		matchBonus = message.match(@bonusRegex)
 
-		console.log JSON.stringify(matchBonus)
-
 		if matchBonus
 
 			count = parseInt(matchBonus[1])
@@ -87,8 +93,6 @@ module.exports = class ManageMessages
 					y2: parseInt matchBonus[6]
 
 	getMessage: ->
-
-		console.log @player.yt
 
 		if @player.isMyTurn()
 

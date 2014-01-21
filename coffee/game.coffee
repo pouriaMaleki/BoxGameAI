@@ -12,18 +12,22 @@ client.on "data", (data) ->
 
 	data = data.toString()
 
-	console.log data
+	console.log "Server Message: " + data
 
 	mm.processMessage data
 
-	message = mm.getMessage()
+	setTimeout ->
 
-	if message
+		message = mm.getMessage()
 
-		client.write message
+		if message
+
+			console.log "My Message: " + message
+
+			client.write message
+
+	, 100
 
 client.on "end", ->
 
 	console.log "client disconnected"
-
-

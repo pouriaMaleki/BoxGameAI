@@ -6,7 +6,9 @@ module.exports = class Player
 
 		@yt = 0
 
-		@intel = new Intelligence
+	createIntel: (row, col) ->
+
+		@intel = new Intelligence row, col
 
 	getNextMove: ->
 

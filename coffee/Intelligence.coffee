@@ -2,9 +2,9 @@ Table = require './Table'
 
 module.exports = class Intelligence
 
-	constructor: ->
+	constructor: (row, col) ->
 
-		@table = new Table
+		@table = new Table row, col
 
 	getNextMove: ->
 
@@ -128,5 +128,13 @@ module.exports = class Intelligence
 		if part2 is '011'  or part2 is '101'  or part2 is '110'
 
 			val--
+
+		if part1 is '001' or part1 is '010' or part1 is '100'
+
+			val += .1
+
+		if part2 is '001' or part2 is '010'  or part2 is '100'
+
+			val += .1
 
 		return val

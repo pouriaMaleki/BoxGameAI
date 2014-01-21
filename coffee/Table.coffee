@@ -1,9 +1,6 @@
 module.exports = class Table
 
-	constructor: ->
-
-		@row = 10
-		@col = 15
+	constructor: (@row, @col) ->
 
 		@h = new Uint8Array (@col - 1) * @row
 		@v = new Uint8Array @col * (@row - 1)
