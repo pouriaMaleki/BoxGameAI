@@ -113,7 +113,7 @@ module.exports = class Intelligence
 
 		part1 = str.substring(0, 3)
 
-		part2 = str.substring(3, 3)
+		part2 = str.substring(3, 6)
 
 		if part1 is '111' or part2 is '111'
 

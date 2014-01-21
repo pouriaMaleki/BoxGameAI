@@ -3,7 +3,7 @@ module.exports = class Table
 	constructor: ->
 
 		@row = 10
-		@col = 10
+		@col = 15
 
 		@h = new Uint8Array (@col - 1) * @row
 		@v = new Uint8Array @col * (@row - 1)
@@ -106,15 +106,15 @@ module.exports = class Table
 
 		if direction is 1
 
-			x = Math.floor(index / (@row - 1))
-			y = index % (@row - 1)
+			x = Math.floor(index / (@col - 1))
+			y = index % (@col - 1)
 
 			return [x, y, x, y + 1]
 
 		else
 
-			x = Math.floor(index / @row)
-			y = index % @row
+			x = Math.floor(index / @col)
+			y = index % @col
 
 			return [x, y, x + 1, y]
 

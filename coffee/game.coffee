@@ -3,9 +3,6 @@ net = require 'net'
 ManageMessages = require './ManageMessages'
 
 mm = new ManageMessages
-# mm.processMessage('Start()')
-# console.log mm.getMessage()
-
 
 client = net.connect {port: 8000}, ->
 
@@ -28,3 +25,5 @@ client.on "data", (data) ->
 client.on "end", ->
 
 	console.log "client disconnected"
+
+
