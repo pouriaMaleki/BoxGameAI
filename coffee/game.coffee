@@ -14,9 +14,7 @@ client.on "data", (data) ->
 
 	console.log "Server Message: " + data
 
-	mm.processMessage data
-
-	setTimeout ->
+	mm.processMessage data, ->
 
 		message = mm.getMessage()
 
@@ -26,7 +24,9 @@ client.on "data", (data) ->
 
 			client.write message
 
-	, 100
+	, ->
+
+		client.end()
 
 client.on "end", ->
 

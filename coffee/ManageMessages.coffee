@@ -12,7 +12,7 @@ module.exports = class ManageMessages
 
 		@invalidRegex = ///(Time`sUP\(\)|InValid\(\))\|(\[([0-9]),([0-9]|1[0-4]),([0-9]),([0-9]|1[0-4])])///
 
-	processMessage: (message) ->
+	processMessage: (message, func, onEnd) ->
 
 		firstMatch = message.substring(0, 1)
 
@@ -26,7 +26,33 @@ module.exports = class ManageMessages
 
 			when 'S'
 
-				@player.yt++
+				secondMatch = message.substring(1, 2)
+
+				if secondMatch is 't'
+
+					@player.yt++
+
+					do func
+
+					return
+
+				else
+
+					@player.yt = 0
+
+					console.log '_________________LOST__________________'
+
+					do onEnd
+
+					return
+
+			when 'C'
+
+				@player.yt = 0
+
+				console.log '_________________WON__________________'
+
+				do onEnd
 
 				return
 
@@ -51,6 +77,8 @@ module.exports = class ManageMessages
 
 				x2: parseInt matchMove[4]
 				y2: parseInt matchMove[5]
+
+			do func
 
 			return
 
@@ -91,6 +119,8 @@ module.exports = class ManageMessages
 
 					x2: parseInt matchBonus[5]
 					y2: parseInt matchBonus[6]
+
+		do func
 
 	getMessage: ->
 

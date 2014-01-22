@@ -140,6 +140,18 @@ module.exports = class Table
 
 			@v[result.index] = 1
 
+	setLine0: (x1, y1, x2, y2) ->
+
+		result = @convertCordinateToLine(x1, y1, x2, y2)
+
+		if result.direction is 1
+
+			@h[result.index] = 0
+
+		else
+
+			@v[result.index] = 0
+
 	getLine: (x1, y1, x2, y2) ->
 
 		if x1 < 0 or y1 < 0 or x2 < 0 or y2 < 0

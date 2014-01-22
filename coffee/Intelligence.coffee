@@ -2,13 +2,13 @@ Table = require './Table'
 
 module.exports = class Intelligence
 
-	constructor: (row, col) ->
+	constructor: (@row, @col) ->
 
-		@table = new Table row, col
+		@table = new Table @row, @col
 
 	getNextMove: ->
 
-		return @generateNextBestMove(@table)
+		return @generateNextBestMove(@table, [@lastMove.x1, @lastMove.y1, @lastMove.x2, @lastMove.y2])
 
 	setLastMove: (@lastMove) ->
 
@@ -35,6 +35,7 @@ module.exports = class Intelligence
 				x2: row + 1
 				y2: col
 
+
 		else
 
 			move =
@@ -45,25 +46,29 @@ module.exports = class Intelligence
 				x2: row
 				y2: col + 1
 
-	generateNextBestMove: (table) ->
+	generateNextBestMove: (table, move) ->
 
 		max = -10000
 
-		cordinates = null
+		cordinates = [null, null, null, null]
 
 		for tableLines, i in table.h
 
 			if tableLines is 0
 
-				cords = @table.convertLineToCordinate(i, 1)
+				cords = table.convertLineToCordinate(i, 1)
 
-				lines =  @table.getHoverLines(cords[0], cords[1], cords[2], cords[3])
+				lines = table.getHoverLines(cords[0], cords[1], cords[2], cords[3])
 
 				value = @calcValue lines
 
-				if max < value
+				childsVal = @level2(table.h, table.v, cords)
 
-					max = value
+				realVal = value - childsVal
+
+				if max < realVal
+
+					max = realVal
 
 					cordinates = cords
 
@@ -71,19 +76,25 @@ module.exports = class Intelligence
 
 			if tableLines is 0
 
-				cords = @table.convertLineToCordinate(i, 0)
+				cords = table.convertLineToCordinate(i, 0)
 
-				lines =  @table.getHoverLines(cords[0], cords[1], cords[2], cords[3])
+				lines = table.getHoverLines(cords[0], cords[1], cords[2], cords[3])
 
 				value = @calcValue lines
 
-				if max < value
+				childsVal = @level2(table.h, table.v, cords)
 
-					max = value
+				realVal = value - childsVal
+
+				if max < realVal
+
+					max = realVal
 
 					cordinates = cords
 
 		return {
+
+			val: max
 
 			x1: cordinates[0]
 			y1: cordinates[1]
@@ -92,6 +103,49 @@ module.exports = class Intelligence
 			y2: cordinates[3]
 
 		}
+
+	level2: (h, v, move) ->
+
+		table = new Table @row, @col
+
+		table.h = h
+		table.v = v
+
+		table.setLine(move[0], move[1], move[2], move[3])
+
+		max = -10000
+
+		for tableLines, i in table.h
+
+			if tableLines is 0
+
+				cords = table.convertLineToCordinate(i, 1)
+
+				lines = table.getHoverLines(cords[0], cords[1], cords[2], cords[3])
+
+				value = @calcValue lines
+
+				if max < value
+
+					max = value
+
+		for tableLines, i in table.v
+
+			if tableLines is 0
+
+				cords = table.convertLineToCordinate(i, 0)
+
+				lines =  table.getHoverLines(cords[0], cords[1], cords[2], cords[3])
+
+				value = @calcValue lines
+
+				if max < value
+
+					max = value
+
+		table.setLine0(move[0], move[1], move[2], move[3])
+
+		return max
 
 	calcValue: (lines) ->
 
