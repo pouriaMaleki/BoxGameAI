@@ -6,6 +6,8 @@ module.exports = class Intelligence
 
 		@table = new Table @row, @col
 
+		@lastMove = '[0,0,0,1]'
+
 	getNextMove: ->
 
 		return @generateNextBestMove(@table, [@lastMove.x1, @lastMove.y1, @lastMove.x2, @lastMove.y2])
